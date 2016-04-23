@@ -14,10 +14,15 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // CLUtil
 
-size_t CLUtil::GetGlobalWorkSize(size_t DataElemCount, size_t LocalWorkSize)
+size_t CLUtil::GetGlobalWorkSize(size_t DataSize, size_t LocalWorkSize)
 {
-	// TO DO: replace with correct work group sizing code here (Sec. 4.6)
-	return 1;
+	size_t r = DataSize % LocalWorkSize;
+	if(r==0) {
+		return DataSize;
+	}
+	else {
+		return DataSize + LocalWorkSize - r;
+	}
 }
 
 bool CLUtil::LoadProgramSourceToMemory(const std::string& Path, std::string& SourceCode)
@@ -49,9 +54,23 @@ cl_program CLUtil::BuildCLProgramFromMemory(cl_device_id Device, cl_context Cont
 	// Ignore the last parameter CompileOptions in assignment 1
 	// This may be used later to pass flags and macro definitions to the OpenCL compiler
 
-	cl_program prog = nullptr;
-
-
+	const char* src = SourceCode.c_str();
+	size_t length = SourceCode.size();
+	cl_int clError;
+	cl_program prog = clCreateProgramWithSource(Context, 1, &src, &length, &clError);
+	if(CL_SUCCESS != clError) {
+		cerr<<"Failed to create CL program from Source.";
+		return nullptr;
+	}
+	
+	clError = clBuildProgram(prog, 1, &Device, NULL, NULL, NULL);
+	PrintBuildLog(prog, Device);
+	if(CL_SUCCESS != clError) {
+		cerr<<"Failed to build CL program.";
+		SAFE_RELEASE_PROGRAM(prog);
+		return nullptr;
+	}
+	
 	return prog;
 }
 
