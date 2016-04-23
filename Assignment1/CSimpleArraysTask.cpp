@@ -138,15 +138,17 @@ void CSimpleArraysTask::ComputeGPU(cl_context Context, cl_command_queue CommandQ
 	size_t nGroups = globalWorkSize / LocalWorkSize[0];
 	cout<<"Executing "<<globalWorkSize<<" threads in "<<nGroups<<" groups of size "<<LocalWorkSize[0]<<endl;
 
+	double ms = CLUtil::ProfileKernel(CommandQueue, m_Kernel, 1, 
+		&globalWorkSize, LocalWorkSize, 100);
+	cout<<"Average execution time: "<<ms<<"ms"<<endl;
+
 	clErr = clEnqueueNDRangeKernel(CommandQueue, m_Kernel, 1, NULL, &globalWorkSize, LocalWorkSize, 0, NULL, NULL);
 	V_RETURN_CL(clErr, "Error executing kernel!.");
-
-	clErr = clEnqueueReadBuffer(CommandQueue, m_dC, CL_TRUE, 0, m_ArraySize * sizeof(int), m_hGPUResult, 0, NULL, NULL);
-
 
 
 	// TO DO: read back results synchronously.
 	//This command has to be blocking, since we need the data
+	clErr = clEnqueueReadBuffer(CommandQueue, m_dC, CL_TRUE, 0, m_ArraySize * sizeof(int), m_hGPUResult, 0, NULL, NULL);
 }
 
 bool CSimpleArraysTask::ValidateResults()

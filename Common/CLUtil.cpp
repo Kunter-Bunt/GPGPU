@@ -100,8 +100,25 @@ void CLUtil::PrintBuildLog(cl_program Program, cl_device_id Device)
 double CLUtil::ProfileKernel(cl_command_queue CommandQueue, cl_kernel Kernel, cl_uint Dimensions, 
 		const size_t* pGlobalWorkSize, const size_t* pLocalWorkSize, int NIterations)
 {
-	// TO DO: Replace with kernel profiling code here
-	return 0.0;
+	cl_int clErr;
+	CTimer timer;
+
+	clErr = clFinish(CommandQueue);	
+	timer.Start();
+
+
+	for(int i = 0; i < NIterations; i++) {
+	clErr = clEnqueueNDRangeKernel(CommandQueue, Kernel, Dimensions, NULL, pGlobalWorkSize, pLocalWorkSize, 0, NULL, NULL);
+	}
+	clErr = clFinish(CommandQueue);	
+	timer.Stop();
+
+	if(clErr != CL_SUCCESS) {
+		cout<<"Error executing kernel!."<<endl;
+		return -1;
+	}
+	double ms = timer.GetElapsedMilliseconds() / double(NIterations);
+	return ms;
 }
 
 #define CL_ERROR(x) case (x): return #x;
