@@ -21,22 +21,22 @@ bool CAssignment1::DoCompute()
 	cout << "Running vector addition example..." << endl << endl;
 	{
 		size_t localWorkSize[3] = {64, 1, 1};
-		CSimpleArraysTask task(1024);
+		CSimpleArraysTask task(1048576);
 		RunComputeTask(task, localWorkSize);
 	}
 	{
 		size_t LocalWorkSize[3] = {128, 1, 1};
-		CSimpleArraysTask task(1024);
+		CSimpleArraysTask task(1048576);
 		RunComputeTask(task, LocalWorkSize);
 	}
 	{
 		size_t localWorkSize[3] = {256, 1, 1};
-		CSimpleArraysTask task(1024);
+		CSimpleArraysTask task(1048576);
 		RunComputeTask(task, localWorkSize);
 	}
 	{
 		size_t localWorkSize[3] = {512, 1, 1};
-		CSimpleArraysTask task(1024);
+		CSimpleArraysTask task(1048576);
 		RunComputeTask(task, localWorkSize);
 	}
 

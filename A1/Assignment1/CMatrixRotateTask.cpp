@@ -61,7 +61,7 @@ bool CMatrixRotateTask::InitResources(cl_device_id Device, cl_context Context)
 	}
 
 	m_NaiveKernel = clCreateKernel(m_Program, "MatrixRotNaive", &clError);
-	V_RETURN_FALSE_CL(clError, "Failed to create Kernel: MatrixRot");
+	V_RETURN_FALSE_CL(clError, "Failed to create Kernel: MatrixRotNaive");
 
 	//TO DO: bind kernel arguments
 	
@@ -69,6 +69,17 @@ bool CMatrixRotateTask::InitResources(cl_device_id Device, cl_context Context)
 	clError = clSetKernelArg(m_NaiveKernel, 1, sizeof(cl_mem), (void*)&m_dMR);
 	clError = clSetKernelArg(m_NaiveKernel, 2, sizeof(cl_int), (void*)&m_SizeX);
 	clError = clSetKernelArg(m_NaiveKernel, 3, sizeof(cl_int), (void*)&m_SizeY);
+	V_RETURN_FALSE_CL(clError, "Failed to set KernelArgs: MatrixRotNaive");	
+
+	m_OptimizedKernel = clCreateKernel(m_Program, "MatrixRotOptimized", &clError);
+	V_RETURN_FALSE_CL(clError, "Failed to create Kernel: MatrixRotOptimized");
+
+	//TO DO: bind kernel arguments
+	
+	clError = clSetKernelArg(m_OptimizedKernel, 0, sizeof(cl_mem), (void*)&m_dM);
+	clError = clSetKernelArg(m_OptimizedKernel, 1, sizeof(cl_mem), (void*)&m_dMR);
+	clError = clSetKernelArg(m_OptimizedKernel, 2, sizeof(cl_int), (void*)&m_SizeX);
+	clError = clSetKernelArg(m_OptimizedKernel, 3, sizeof(cl_int), (void*)&m_SizeY);
 	V_RETURN_FALSE_CL(clError, "Failed to set KernelArgs: MatrixRot");	
 
 	return true;
@@ -95,8 +106,8 @@ void CMatrixRotateTask::ComputeGPU(cl_context Context, cl_command_queue CommandQ
 	clErr |= clEnqueueWriteBuffer(CommandQueue, m_dM, CL_FALSE, 0, (m_SizeX * m_SizeY) * sizeof(int), m_hM , 0, NULL, NULL);
 	V_RETURN_CL(clErr, "Failed to write buffer from m_hM to m_dM.");
 
-	clErr |= clEnqueueWriteBuffer(CommandQueue, m_dMR, CL_FALSE, 0, (m_SizeX * m_SizeY) * sizeof(int), m_hMR , 0, NULL, NULL);
-	V_RETURN_CL(clErr, "Failed to write buffer from m_hMR to m_dMR.");
+	//clErr |= clEnqueueWriteBuffer(CommandQueue, m_dMR, CL_FALSE, 0, (m_SizeX * m_SizeY) * sizeof(int), m_hMR , 0, NULL, NULL);
+	//V_RETURN_CL(clErr, "Failed to write buffer from m_hMR to m_dMR.");
 
 
 	//launch kernels
@@ -109,16 +120,16 @@ void CMatrixRotateTask::ComputeGPU(cl_context Context, cl_command_queue CommandQ
 	nGroups[0] = globalWorkSize[0] / LocalWorkSize[0];
 	nGroups[1] = globalWorkSize[1] / LocalWorkSize[1];
 	
-	cout<<"Executing ("<<globalWorkSize[0]<<" x "<<globalWorkSize[1]<<" threads in ("<<nGroups[0]<<" x "<<nGroups[1]<<") groups of size ("<<LocalWorkSize[0]<<" x "<<LocalWorkSize[1]<<")."<<endl;
+	cout<<"Executing ("<<globalWorkSize[0]<<" x "<<globalWorkSize[1]<<") threads in ("<<nGroups[0]<<" x "<<nGroups[1]<<") groups of size ("<<LocalWorkSize[0]<<" x "<<LocalWorkSize[1]<<")."<<endl;
 
-	clErr = clEnqueueNDRangeKernel(CommandQueue, m_NaiveKernel, 1, NULL, globalWorkSize, LocalWorkSize, 0, NULL, NULL);
-	V_RETURN_CL(clErr, "Error executing kernel!.");
+	clErr = clEnqueueNDRangeKernel(CommandQueue, m_NaiveKernel, 2, NULL, globalWorkSize, LocalWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing NaiveKernel!.");
 
 	//Profiling
 	double time = 0;
-	//time = CLUtil::ProfileKernel(CommandQueue, m_NaiveKernel, 1, &globalWorkSize, LocalWorkSize, 100);
-	time /= 100;
-	cout<<"Executed naive kernel in "<<time<<" ms."<<endl;
+	time = CLUtil::ProfileKernel(CommandQueue, m_NaiveKernel, 2, globalWorkSize, LocalWorkSize, 1000);
+	//time /= 1000;
+	cout<<"Executed naive kernel 1000x in "<<time<<" ms."<<endl;
 	
 	// TO DO: read back the results synchronously.
 	//this command has to be blocking, since we want to check the valid data
@@ -126,19 +137,24 @@ void CMatrixRotateTask::ComputeGPU(cl_context Context, cl_command_queue CommandQ
 
 
 
-
+	//memset((*void)d_MR, 0, sizeof(float) * m_SizeX * m_SizeY);
 
 	//optimized kernel
 	
 	// TO DO: allocate shared (local) memory for the kernel
+	clErr = clSetKernelArg(m_OptimizedKernel, 4, LocalWorkSize[0] * LocalWorkSize[1] * sizeof(float), NULL);
+	V_RETURN_CL(clErr, "Error allocating shared memory!");
 	
 	time = 0;
 	// run kernel
+	clErr = clEnqueueNDRangeKernel(CommandQueue, m_OptimizedKernel, 2, NULL, globalWorkSize, LocalWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing OptimizedKernel!.");
 	// TO DO: time = GLUtil::ProfileKernel...
-	cout<<"Executed optimized kernel in "<<time<<" ms."<<endl;
+	time = CLUtil::ProfileKernel(CommandQueue, m_OptimizedKernel, 2, globalWorkSize, LocalWorkSize, 1000);
+	cout<<"Executed optimized kernel 1000x in "<<time<<" ms."<<endl;
 
 	// TO DO: read back the data to the host
-	
+	clErr = clEnqueueReadBuffer(CommandQueue, m_dMR, CL_TRUE, 0, (m_SizeX * m_SizeY) * sizeof(int), m_hGPUResultOpt, 0, NULL, NULL);
 }
 
 void CMatrixRotateTask::ComputeCPU()
