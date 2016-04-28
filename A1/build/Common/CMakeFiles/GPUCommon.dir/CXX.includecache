@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CAssignmentBase.cpp
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CAssignmentBase.cpp
 CAssignmentBase.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CAssignmentBase.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CAssignmentBase.h
 CLUtil.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CLUtil.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CLUtil.h
 CTimer.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.h
 vector
 -
 windows.h
@@ -22,23 +22,23 @@ OpenGL/OpenGL.h
 GL/glx.h
 -
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CAssignmentBase.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CAssignmentBase.h
 IComputeTask.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/IComputeTask.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/IComputeTask.h
 CommonDefs.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CommonDefs.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CommonDefs.h
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CLUtil.cpp
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CLUtil.cpp
 CLUtil.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CLUtil.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CLUtil.h
 CTimer.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.h
 iostream
 -
 fstream
 -
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CLUtil.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CLUtil.h
 CL/opencl.h
 -
 OpenCL/opencl.h
@@ -46,7 +46,7 @@ OpenCL/opencl.h
 CL/cl.h
 -
 CommonDefs.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CommonDefs.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CommonDefs.h
 string
 -
 iostream
@@ -54,11 +54,11 @@ iostream
 algorithm
 -
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.cpp
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.cpp
 CTimer.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.h
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.h
 Windows.h
 -
 sys/time.h
@@ -68,9 +68,9 @@ sys/time.h
 time.h
 -
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CommonDefs.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CommonDefs.h
 
-/home/stud/s_wodtke/Downloads/Assignment1/Common/IComputeTask.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/IComputeTask.h
 CL/opencl.h
 -
 OpenCL/opencl.h
@@ -78,7 +78,7 @@ OpenCL/opencl.h
 CL/cl.h
 -
 CommonDefs.h
-/home/stud/s_wodtke/Downloads/Assignment1/Common/CommonDefs.h
+/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CommonDefs.h
 
 /usr/local/cuda/include/CL/cl.h
 OpenCL/cl_platform.h

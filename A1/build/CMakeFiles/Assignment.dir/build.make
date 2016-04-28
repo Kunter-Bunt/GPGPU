@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stud/s_wodtke/Downloads/Assignment1/Assignment1
+CMAKE_SOURCE_DIR = /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stud/s_wodtke/Downloads/Assignment1/build
+CMAKE_BINARY_DIR = /home/stud/s_wodtke/Downloads/Assignment1/A1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Assignment.dir/depend.make
@@ -58,17 +58,17 @@ include CMakeFiles/Assignment.dir/progress.make
 include CMakeFiles/Assignment.dir/flags.make
 
 CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o: CMakeFiles/Assignment.dir/flags.make
-CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CSimpleArraysTask.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o"
-	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CSimpleArraysTask.cpp
+CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CSimpleArraysTask.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o"
+	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CSimpleArraysTask.cpp
 
 CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.i"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CSimpleArraysTask.cpp > CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.i
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CSimpleArraysTask.cpp > CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.i
 
 CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.s"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CSimpleArraysTask.cpp -o CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.s
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CSimpleArraysTask.cpp -o CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.s
 
 CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o.requires:
 
@@ -82,17 +82,17 @@ CMakeFiles/Assignment.dir/CSimpleArraysTask.cpp.o.provides.build: CMakeFiles/Ass
 
 
 CMakeFiles/Assignment.dir/main.cpp.o: CMakeFiles/Assignment.dir/flags.make
-CMakeFiles/Assignment.dir/main.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Assignment.dir/main.cpp.o"
-	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/main.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/main.cpp
+CMakeFiles/Assignment.dir/main.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Assignment.dir/main.cpp.o"
+	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/main.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/main.cpp
 
 CMakeFiles/Assignment.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Assignment.dir/main.cpp.i"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/main.cpp > CMakeFiles/Assignment.dir/main.cpp.i
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/main.cpp > CMakeFiles/Assignment.dir/main.cpp.i
 
 CMakeFiles/Assignment.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Assignment.dir/main.cpp.s"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/main.cpp -o CMakeFiles/Assignment.dir/main.cpp.s
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/main.cpp -o CMakeFiles/Assignment.dir/main.cpp.s
 
 CMakeFiles/Assignment.dir/main.cpp.o.requires:
 
@@ -106,17 +106,17 @@ CMakeFiles/Assignment.dir/main.cpp.o.provides.build: CMakeFiles/Assignment.dir/m
 
 
 CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o: CMakeFiles/Assignment.dir/flags.make
-CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CMatrixRotateTask.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o"
-	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CMatrixRotateTask.cpp
+CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CMatrixRotateTask.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o"
+	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CMatrixRotateTask.cpp
 
 CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.i"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CMatrixRotateTask.cpp > CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.i
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CMatrixRotateTask.cpp > CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.i
 
 CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.s"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CMatrixRotateTask.cpp -o CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.s
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CMatrixRotateTask.cpp -o CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.s
 
 CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o.requires:
 
@@ -130,17 +130,17 @@ CMakeFiles/Assignment.dir/CMatrixRotateTask.cpp.o.provides.build: CMakeFiles/Ass
 
 
 CMakeFiles/Assignment.dir/CAssignment1.cpp.o: CMakeFiles/Assignment.dir/flags.make
-CMakeFiles/Assignment.dir/CAssignment1.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CAssignment1.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Assignment.dir/CAssignment1.cpp.o"
-	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CAssignment1.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CAssignment1.cpp
+CMakeFiles/Assignment.dir/CAssignment1.cpp.o: /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CAssignment1.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Assignment.dir/CAssignment1.cpp.o"
+	/usr/lib64/ccache/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Assignment.dir/CAssignment1.cpp.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CAssignment1.cpp
 
 CMakeFiles/Assignment.dir/CAssignment1.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Assignment.dir/CAssignment1.cpp.i"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CAssignment1.cpp > CMakeFiles/Assignment.dir/CAssignment1.cpp.i
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CAssignment1.cpp > CMakeFiles/Assignment.dir/CAssignment1.cpp.i
 
 CMakeFiles/Assignment.dir/CAssignment1.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Assignment.dir/CAssignment1.cpp.s"
-	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/Assignment1/CAssignment1.cpp -o CMakeFiles/Assignment.dir/CAssignment1.cpp.s
+	/usr/lib64/ccache/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1/CAssignment1.cpp -o CMakeFiles/Assignment.dir/CAssignment1.cpp.s
 
 CMakeFiles/Assignment.dir/CAssignment1.cpp.o.requires:
 
@@ -171,7 +171,7 @@ Assignment: CMakeFiles/Assignment.dir/build.make
 Assignment: /usr/local/cuda/lib64/libOpenCL.so
 Assignment: Common/libGPUCommon.a
 Assignment: CMakeFiles/Assignment.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Assignment"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Assignment"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Assignment.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -191,6 +191,6 @@ CMakeFiles/Assignment.dir/clean:
 .PHONY : CMakeFiles/Assignment.dir/clean
 
 CMakeFiles/Assignment.dir/depend:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/stud/s_wodtke/Downloads/Assignment1/Assignment1 /home/stud/s_wodtke/Downloads/Assignment1/Assignment1 /home/stud/s_wodtke/Downloads/Assignment1/build /home/stud/s_wodtke/Downloads/Assignment1/build /home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles/Assignment.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1 /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1 /home/stud/s_wodtke/Downloads/Assignment1/A1/build /home/stud/s_wodtke/Downloads/Assignment1/A1/build /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/Assignment.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Assignment.dir/depend
 

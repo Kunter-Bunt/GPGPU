@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stud/s_wodtke/Downloads/Assignment1/Assignment1
+CMAKE_SOURCE_DIR = /home/stud/s_wodtke/Downloads/Assignment1/A1/Assignment1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stud/s_wodtke/Downloads/Assignment1/build
+CMAKE_BINARY_DIR = /home/stud/s_wodtke/Downloads/Assignment1/A1/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles /home/stud/s_wodtke/Downloads/Assignment1/build/Common/CMakeFiles/progress.marks
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles 0
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles /home/stud/s_wodtke/Downloads/Assignment1/A1/build/Common/CMakeFiles/progress.marks
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/clean
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/preinstall
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/preinstall
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 Common/CMakeFiles/GPUCommon.dir/rule:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/CMakeFiles/GPUCommon.dir/rule
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f CMakeFiles/Makefile2 Common/CMakeFiles/GPUCommon.dir/rule
 .PHONY : Common/CMakeFiles/GPUCommon.dir/rule
 
 # Convenience name for target.
@@ -122,7 +122,7 @@ GPUCommon: Common/CMakeFiles/GPUCommon.dir/rule
 
 # fast build rule for target.
 GPUCommon/fast:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/build
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/build
 .PHONY : GPUCommon/fast
 
 CAssignmentBase.o: CAssignmentBase.cpp.o
@@ -131,7 +131,7 @@ CAssignmentBase.o: CAssignmentBase.cpp.o
 
 # target to build an object file
 CAssignmentBase.cpp.o:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.o
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.o
 .PHONY : CAssignmentBase.cpp.o
 
 CAssignmentBase.i: CAssignmentBase.cpp.i
@@ -140,7 +140,7 @@ CAssignmentBase.i: CAssignmentBase.cpp.i
 
 # target to preprocess a source file
 CAssignmentBase.cpp.i:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.i
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.i
 .PHONY : CAssignmentBase.cpp.i
 
 CAssignmentBase.s: CAssignmentBase.cpp.s
@@ -149,7 +149,7 @@ CAssignmentBase.s: CAssignmentBase.cpp.s
 
 # target to generate assembly for a file
 CAssignmentBase.cpp.s:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.s
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.s
 .PHONY : CAssignmentBase.cpp.s
 
 CLUtil.o: CLUtil.cpp.o
@@ -158,7 +158,7 @@ CLUtil.o: CLUtil.cpp.o
 
 # target to build an object file
 CLUtil.cpp.o:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.o
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.o
 .PHONY : CLUtil.cpp.o
 
 CLUtil.i: CLUtil.cpp.i
@@ -167,7 +167,7 @@ CLUtil.i: CLUtil.cpp.i
 
 # target to preprocess a source file
 CLUtil.cpp.i:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.i
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.i
 .PHONY : CLUtil.cpp.i
 
 CLUtil.s: CLUtil.cpp.s
@@ -176,7 +176,7 @@ CLUtil.s: CLUtil.cpp.s
 
 # target to generate assembly for a file
 CLUtil.cpp.s:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.s
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.s
 .PHONY : CLUtil.cpp.s
 
 CTimer.o: CTimer.cpp.o
@@ -185,7 +185,7 @@ CTimer.o: CTimer.cpp.o
 
 # target to build an object file
 CTimer.cpp.o:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.o
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.o
 .PHONY : CTimer.cpp.o
 
 CTimer.i: CTimer.cpp.i
@@ -194,7 +194,7 @@ CTimer.i: CTimer.cpp.i
 
 # target to preprocess a source file
 CTimer.cpp.i:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.i
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.i
 .PHONY : CTimer.cpp.i
 
 CTimer.s: CTimer.cpp.s
@@ -203,7 +203,7 @@ CTimer.s: CTimer.cpp.s
 
 # target to generate assembly for a file
 CTimer.cpp.s:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.s
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(MAKE) -f Common/CMakeFiles/GPUCommon.dir/build.make Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.s
 .PHONY : CTimer.cpp.s
 
 # Help Target
@@ -235,6 +235,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/stud/s_wodtke/Downloads/Assignment1/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/stud/s_wodtke/Downloads/Assignment1/A1/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

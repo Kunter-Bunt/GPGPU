@@ -1,4 +1,4 @@
-# Install script for directory: /home/stud/s_wodtke/Downloads/Assignment1/Common
+# Install script for directory: /home/stud/s_wodtke/Downloads/Assignment1/A1/Common
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

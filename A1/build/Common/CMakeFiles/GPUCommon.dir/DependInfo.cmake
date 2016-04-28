@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/stud/s_wodtke/Downloads/Assignment1/Common/CAssignmentBase.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/build/Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.o"
-  "/home/stud/s_wodtke/Downloads/Assignment1/Common/CLUtil.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/build/Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.o"
-  "/home/stud/s_wodtke/Downloads/Assignment1/Common/CTimer.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/build/Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.o"
+  "/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CAssignmentBase.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/A1/build/Common/CMakeFiles/GPUCommon.dir/CAssignmentBase.cpp.o"
+  "/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CLUtil.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/A1/build/Common/CMakeFiles/GPUCommon.dir/CLUtil.cpp.o"
+  "/home/stud/s_wodtke/Downloads/Assignment1/A1/Common/CTimer.cpp" "/home/stud/s_wodtke/Downloads/Assignment1/A1/build/Common/CMakeFiles/GPUCommon.dir/CTimer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

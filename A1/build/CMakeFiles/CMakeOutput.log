@@ -557,3 +557,33 @@ gmake[1]: Leaving directory '/home/stud/s_wodtke/Downloads/Assignment1/build/CMa
 
 Source file was:
 int main() { return 0; }
+Performing C++ SOURCE FILE Test HAS_CXX_11 succeded with the following output:
+Change Dir: /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/bin/gmake" "cmTC_fe4bd/fast"
+/bin/gmake -f CMakeFiles/cmTC_fe4bd.dir/build.make CMakeFiles/cmTC_fe4bd.dir/build
+gmake[1]: Entering directory '/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fe4bd.dir/src.cxx.o
+/usr/lib64/ccache/c++    -DHAS_CXX_11   -std=c++11 -o CMakeFiles/cmTC_fe4bd.dir/src.cxx.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_fe4bd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe4bd.dir/link.txt --verbose=1
+/usr/lib64/ccache/c++    -DHAS_CXX_11    CMakeFiles/cmTC_fe4bd.dir/src.cxx.o  -o cmTC_fe4bd -rdynamic 
+gmake[1]: Leaving directory '/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAS_CXX_11 succeded with the following output:
+Change Dir: /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/bin/gmake" "cmTC_3da78/fast"
+/bin/gmake -f CMakeFiles/cmTC_3da78.dir/build.make CMakeFiles/cmTC_3da78.dir/build
+gmake[1]: Entering directory '/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3da78.dir/src.cxx.o
+/usr/lib64/ccache/c++    -DHAS_CXX_11   -std=c++11 -o CMakeFiles/cmTC_3da78.dir/src.cxx.o -c /home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_3da78
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3da78.dir/link.txt --verbose=1
+/usr/lib64/ccache/c++    -DHAS_CXX_11    CMakeFiles/cmTC_3da78.dir/src.cxx.o  -o cmTC_3da78 -rdynamic 
+gmake[1]: Leaving directory '/home/stud/s_wodtke/Downloads/Assignment1/A1/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
