@@ -1,2 +1,0 @@
-/home/stud/s_wodtke/Downloads/Assignment1/build/CMakeFiles/Assignment.dir
-/home/stud/s_wodtke/Downloads/Assignment1/build/Common/CMakeFiles/GPUCommon.dir
