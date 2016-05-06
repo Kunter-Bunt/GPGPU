@@ -38,6 +38,7 @@ bool CReductionTask::InitResources(cl_device_id Device, cl_context Context)
 {
 	//CPU resources
 	m_hInput = new unsigned int[m_N];
+	unsigned int m_stride;
 
 	//fill the array with some values
 	for(unsigned int i = 0; i < m_N; i++) 
@@ -72,6 +73,9 @@ bool CReductionTask::InitResources(cl_device_id Device, cl_context Context)
 	m_DecompUnrollKernel = clCreateKernel(m_Program, "Reduction_DecompUnroll", &clError);
 	V_RETURN_FALSE_CL(clError, "Failed to create kernel: Reduction_DecompUnroll.");
 
+	clError = clSetKernelArg(m_InterleavedAddressingKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
+	clError = clSetKernelArg(m_InterleavedAddressingKernel, 1, sizeof(cl_uint), (void*)&m_stride);
+	V_RETURN_FALSE_CL(clError, "Failed to set KernelArgs: InterleavedAddressingKernel");	
 	return true;
 }
 
@@ -132,6 +136,7 @@ bool CReductionTask::ValidateResults()
 	for(int i = 0; i < 4; i++)
 		if(m_resultGPU[i] != m_resultCPU)
 		{
+			cout<<"GPU:"<<m_resultGPU[i]<<" CPU:"<<m_resultCPU<<endl;
 			cout<<"Validation of reduction kernel "<<g_kernelNames[i]<<" failed." << endl;
 			success = false;
 		}
@@ -141,15 +146,24 @@ bool CReductionTask::ValidateResults()
 
 void CReductionTask::Reduction_InterleavedAddressing(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
 {
-	//cl_int clErr;
-	//size_t globalWorkSize[1];
-	//size_t localWorkSize[1];
-	//unsigned int stride = ...;
+	cl_int clErr;
+	size_t globalWorkSize[1];
+	size_t localWorkSize[1];
+	localWorkSize[0] = LocalWorkSize[0];
 
-	// TO DO: Implement reduction with interleaved addressing
+	for (m_stride = 2; m_stride <= m_N; m_stride *= 2) {
+		
+		globalWorkSize[0] = m_N / m_stride;
+		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
+		
+		clErr = clSetKernelArg(m_InterleavedAddressingKernel, 1, sizeof(cl_uint), (void*)&m_stride);
+		V_RETURN_CL(clErr, "Failed to set KernelArgs: InterleavedAddressingKernel");	
+		//cout<<m_stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		clErr = clEnqueueNDRangeKernel(CommandQueue, m_InterleavedAddressingKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing InterleavedAddressingKernel!");
+	}
 
-	//for (...) {
-	//}
+	
 }
 
 void CReductionTask::Reduction_SequentialAddressing(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])

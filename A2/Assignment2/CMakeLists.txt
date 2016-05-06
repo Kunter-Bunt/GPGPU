@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.8.3) 
 project (GPUComputing) 
 
+link_directories(/home/stud/s_wodtke/Downloads)
 # Add our modules to the path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake/")
 

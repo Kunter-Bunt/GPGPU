@@ -46,13 +46,13 @@ bool CSimpleArraysTask::InitResources(cl_device_id Device, cl_context Context)
 	
 	cl_int clError;
 	m_dA = clCreateBuffer (Context, CL_MEM_READ_ONLY, sizeof(cl_int) *m_ArraySize, NULL, &clError);
-
 	V_RETURN_FALSE_CL(clError, "Failed to create buffer for m_dA.");
+
 	m_dB = clCreateBuffer(Context, CL_MEM_READ_ONLY, sizeof(cl_int) *m_ArraySize, NULL, &clError);
+	V_RETURN_FALSE_CL(clError, "Failed to create buffer for m_dB.");
 
-	V_RETURN_FALSE_CL(clError, "Failed to create buffer for m_dA.");
 	m_dC = clCreateBuffer(Context, CL_MEM_WRITE_ONLY, sizeof(cl_int) *m_ArraySize, NULL, &clError);
-	V_RETURN_FALSE_CL(clError, "Failed to create buffer for m_dA.");
+	V_RETURN_FALSE_CL(clError, "Failed to create buffer for m_dC.");
 
 	
 

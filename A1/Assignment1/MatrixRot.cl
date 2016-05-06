@@ -16,11 +16,10 @@ __kernel void MatrixRotOptimized(__global const float* M, __global float* MR, ui
 	int2 GID;
 	int2 LID;
 	int2 NGID;
-
+	
 	GID.x = get_global_id(0);
 	GID.y = get_global_id(1);
 
-		
 	LID.x = get_local_id(0);
 	LID.y = get_local_id(1);
 		
@@ -28,15 +27,14 @@ __kernel void MatrixRotOptimized(__global const float* M, __global float* MR, ui
 	NGID.y = (GID.x + GID.y * SizeX) / SizeY;
 
 	if (GID.x < SizeX && GID.y < SizeY) {
-
-
 		block[LID.x + LID.y * get_local_size(0)] = M[(SizeY - NGID.x - 1) * SizeX + NGID.y];
 		barrier(CLK_LOCAL_MEM_FENCE);
 
 		MR[NGID.y * SizeY + NGID.x] = block[LID.y * get_local_size(0) + LID.x];
-
-		
-
 	}
+
 }
  
+
+	
+	

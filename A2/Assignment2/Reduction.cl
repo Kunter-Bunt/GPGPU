@@ -3,6 +3,9 @@
 __kernel void Reduction_InterleavedAddressing(__global uint* array, uint stride) 
 {
 	// TO DO: Kernel implementation
+	int GID = get_global_id(0);
+	
+	array[GID * stride] += array[GID * stride + stride / 2];
 }
 
 
