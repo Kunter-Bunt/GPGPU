@@ -56,7 +56,6 @@ protected:
 	//to avoid confusions: 'h' - host, 'd' - device
 
 	unsigned int		m_N;
-	unsigned int		m_stride;
 
 	// input data
 	unsigned int		*m_hInput;
