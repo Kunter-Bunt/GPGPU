@@ -2,9 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 __kernel void Reduction_InterleavedAddressing(__global uint* array, uint stride) 
 {
-	// TO DO: Kernel implementation
 	int GID = get_global_id(0);
-	
 	array[GID * stride] += array[GID * stride + stride / 2];
 }
 
@@ -12,7 +10,9 @@ __kernel void Reduction_InterleavedAddressing(__global uint* array, uint stride)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 __kernel void Reduction_SequentialAddressing(__global uint* array, uint stride) 
 {
-	// TO DO: Kernel implementation
+	int GID = get_global_id(0);
+	//int Size = get_global_size(0);
+	array[GID] += array[GID + stride];
 }
 
 

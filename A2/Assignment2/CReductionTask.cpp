@@ -38,7 +38,6 @@ bool CReductionTask::InitResources(cl_device_id Device, cl_context Context)
 {
 	//CPU resources
 	m_hInput = new unsigned int[m_N];
-	unsigned int m_stride;
 
 	//fill the array with some values
 	for(unsigned int i = 0; i < m_N; i++) 
@@ -74,7 +73,7 @@ bool CReductionTask::InitResources(cl_device_id Device, cl_context Context)
 	V_RETURN_FALSE_CL(clError, "Failed to create kernel: Reduction_DecompUnroll.");
 
 	clError = clSetKernelArg(m_InterleavedAddressingKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
-	clError = clSetKernelArg(m_InterleavedAddressingKernel, 1, sizeof(cl_uint), (void*)&m_stride);
+	clError = clSetKernelArg(m_SequentialAddressingKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
 	V_RETURN_FALSE_CL(clError, "Failed to set KernelArgs: InterleavedAddressingKernel");	
 	return true;
 }
@@ -147,18 +146,19 @@ bool CReductionTask::ValidateResults()
 void CReductionTask::Reduction_InterleavedAddressing(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
 {
 	cl_int clErr;
+	unsigned int stride;
 	size_t globalWorkSize[1];
 	size_t localWorkSize[1];
 	localWorkSize[0] = LocalWorkSize[0];
 
-	for (m_stride = 2; m_stride <= m_N; m_stride *= 2) {
+	for (stride = 2; stride <= m_N; stride *= 2) {
 		
-		globalWorkSize[0] = m_N / m_stride;
+		globalWorkSize[0] = m_N / stride;
 		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
 		
-		clErr = clSetKernelArg(m_InterleavedAddressingKernel, 1, sizeof(cl_uint), (void*)&m_stride);
+		clErr = clSetKernelArg(m_InterleavedAddressingKernel, 1, sizeof(cl_uint), (void*)&stride);
 		V_RETURN_CL(clErr, "Failed to set KernelArgs: InterleavedAddressingKernel");	
-		//cout<<m_stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		//cout<<stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
 		clErr = clEnqueueNDRangeKernel(CommandQueue, m_InterleavedAddressingKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
 	V_RETURN_CL(clErr, "Error executing InterleavedAddressingKernel!");
 	}
@@ -168,9 +168,23 @@ void CReductionTask::Reduction_InterleavedAddressing(cl_context Context, cl_comm
 
 void CReductionTask::Reduction_SequentialAddressing(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
 {
+	cl_int clErr;
+	unsigned int stride;
+	size_t globalWorkSize[1];
+	size_t localWorkSize[1];
+	localWorkSize[0] = LocalWorkSize[0];
 
-	// TO DO: Implement reduction with sequential addressing
-
+	for (stride = m_N / 2; stride >= 1; stride /= 2) {
+		
+		globalWorkSize[0] = stride;
+		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
+		
+		clErr = clSetKernelArg(m_SequentialAddressingKernel, 1, sizeof(cl_uint), (void*)&stride);
+		V_RETURN_CL(clErr, "Failed to set KernelArgs: InterleavedAddressingKernel");	
+		//cout<<stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		clErr = clEnqueueNDRangeKernel(CommandQueue, m_SequentialAddressingKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing InterleavedAddressingKernel!");
+	}
 }
 
 void CReductionTask::Reduction_Decomp(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
