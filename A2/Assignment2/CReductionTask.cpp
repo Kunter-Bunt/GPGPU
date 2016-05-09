@@ -232,7 +232,28 @@ void CReductionTask::Reduction_DecompUnroll(cl_context Context, cl_command_queue
 	// (CReductionTask::ExecuteTask)
 	//
 	// hint: for example, you can use swap(m_dPingArray, m_dPongArray) at the end of your for loop...
-	
+	cl_int clErr;
+	//unsigned int stride;
+	unsigned int size;
+	size_t globalWorkSize[1];
+	size_t localWorkSize[1];
+	localWorkSize[0] = 256; 
+	clErr = clSetKernelArg(m_DecompUnrollKernel, 3, localWorkSize[0] * sizeof(cl_uint), NULL);
+
+	for (size = m_N; size > 1; size /= (localWorkSize[0]*2)) {
+		
+		globalWorkSize[0] = size / 2;
+		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
+		clErr = clSetKernelArg(m_DecompUnrollKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
+		clErr |= clSetKernelArg(m_DecompUnrollKernel, 1, sizeof(cl_mem), (void*)&m_dPongArray);
+		clErr |= clSetKernelArg(m_DecompUnrollKernel, 2, sizeof(cl_uint), (void*)&size);
+		
+		V_RETURN_CL(clErr, "Failed to set KernelArgs: DecompKernel");	
+		//cout<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		clErr = clEnqueueNDRangeKernel(CommandQueue, m_DecompUnrollKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing DecompKernel!");
+	std::swap(m_dPingArray, m_dPongArray);
+	}
 }
 
 void CReductionTask::ExecuteTask(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3], unsigned int Task)
