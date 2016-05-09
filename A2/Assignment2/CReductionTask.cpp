@@ -74,6 +74,7 @@ bool CReductionTask::InitResources(cl_device_id Device, cl_context Context)
 
 	clError = clSetKernelArg(m_InterleavedAddressingKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
 	clError = clSetKernelArg(m_SequentialAddressingKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
+
 	V_RETURN_FALSE_CL(clError, "Failed to set KernelArgs: InterleavedAddressingKernel");	
 	return true;
 }
@@ -180,10 +181,10 @@ void CReductionTask::Reduction_SequentialAddressing(cl_context Context, cl_comma
 		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
 		
 		clErr = clSetKernelArg(m_SequentialAddressingKernel, 1, sizeof(cl_uint), (void*)&stride);
-		V_RETURN_CL(clErr, "Failed to set KernelArgs: InterleavedAddressingKernel");	
+		V_RETURN_CL(clErr, "Failed to set KernelArgs: SequentialAddressingKernel");	
 		//cout<<stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
 		clErr = clEnqueueNDRangeKernel(CommandQueue, m_SequentialAddressingKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
-	V_RETURN_CL(clErr, "Error executing InterleavedAddressingKernel!");
+	V_RETURN_CL(clErr, "Error executing SequentialAddressingKernel!");
 	}
 }
 
@@ -197,6 +198,28 @@ void CReductionTask::Reduction_Decomp(cl_context Context, cl_command_queue Comma
 	// (CReductionTask::ExecuteTask)
 	//
 	// hint: for example, you can use swap(m_dPingArray, m_dPongArray) at the end of your for loop...
+	cl_int clErr;
+	//unsigned int stride;
+	unsigned int size;
+	size_t globalWorkSize[1];
+	size_t localWorkSize[1];
+	localWorkSize[0] = LocalWorkSize[0];
+	clErr = clSetKernelArg(m_DecompKernel, 3, localWorkSize[0] * sizeof(cl_uint), NULL);
+
+	for (size = m_N; size > 1; size /= (localWorkSize[0]*2)) {
+		
+		globalWorkSize[0] = size / 2;
+		localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
+		clErr = clSetKernelArg(m_DecompKernel, 0, sizeof(cl_mem), (void*)&m_dPingArray);
+		clErr |= clSetKernelArg(m_DecompKernel, 1, sizeof(cl_mem), (void*)&m_dPongArray);
+		clErr |= clSetKernelArg(m_DecompKernel, 2, sizeof(cl_uint), (void*)&size);
+		
+		V_RETURN_CL(clErr, "Failed to set KernelArgs: DecompKernel");	
+		//cout<<stride<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		clErr = clEnqueueNDRangeKernel(CommandQueue, m_DecompKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing DecompKernel!");
+	std::swap(m_dPingArray, m_dPongArray);
+	}
 }
 
 void CReductionTask::Reduction_DecompUnroll(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
@@ -209,7 +232,7 @@ void CReductionTask::Reduction_DecompUnroll(cl_context Context, cl_command_queue
 	// (CReductionTask::ExecuteTask)
 	//
 	// hint: for example, you can use swap(m_dPingArray, m_dPongArray) at the end of your for loop...
-
+	
 }
 
 void CReductionTask::ExecuteTask(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3], unsigned int Task)
