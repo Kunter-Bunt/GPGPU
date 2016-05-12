@@ -206,15 +206,26 @@ void CScanTask::Scan_Naive(cl_context Context, cl_command_queue CommandQueue, si
 	V_RETURN_CL(clErr, "Error executing ScanNaiveKernel!");
 	std::swap(m_dPingArray, m_dPongArray);
 	}
+	
 }
 
 void CScanTask::Scan_WorkEfficient(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3])
 {
 
-	// TO DO: Implement efficient version of scan
-
-	// Make sure that the local prefix sum works before you start experimenting with large arrays
-
+		cl_int clErr;
+	size_t globalWorkSize[1];
+	size_t localWorkSize[1];
+	localWorkSize[0] = LocalWorkSize[0];
+	globalWorkSize[0] = m_N;
+	localWorkSize[0] = std::min(globalWorkSize[0], localWorkSize[0]);
+	clErr = clSetKernelArg(m_ScanWorkEfficientKernel, 0, sizeof(cl_mem), (void*)&m_dLevelArrays[0]);
+	clErr = clSetKernelArg(m_ScanWorkEfficientKernel, 1, sizeof(cl_mem), (void*)&m_dPongArray);
+	clErr = clSetKernelArg(m_ScanWorkEfficientKernel, 2, localWorkSize[0] * sizeof(cl_uint), NULL);
+	V_RETURN_CL(clErr, "Failed to set KernelArgs: ScanNaiveKernel");	
+		//cout<<offset<<" : "<<globalWorkSize[0]<<" : "<<localWorkSize[0]<<endl;
+		clErr = clEnqueueNDRangeKernel(CommandQueue, m_ScanWorkEfficientKernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+	V_RETURN_CL(clErr, "Error executing ScanWorkEfficientKernel!");
+	//std::swap(m_dPingArray, m_dPongArray);
 }
 
 void CScanTask::ValidateTask(cl_context Context, cl_command_queue CommandQueue, size_t LocalWorkSize[3], unsigned int Task)
@@ -232,8 +243,8 @@ void CScanTask::ValidateTask(cl_context Context, cl_command_queue CommandQueue, 
 			V_RETURN_CL(clEnqueueReadBuffer(CommandQueue, m_dLevelArrays[0], CL_TRUE, 0, m_N * sizeof(cl_uint), m_hResultGPU, 0, NULL, NULL), "Error reading data from device!");
 			break;
 	}
-	for (int i = 0; i < 10; ++i) cout << m_hResultCPU[i] << " "; cout << endl;
-	for (int i = 0; i < 10; ++i) cout << m_hResultGPU[i] << " "; cout << endl;
+	for (int i = 0; i < 16; ++i) cout << m_hResultCPU[i] << " "; cout << endl;
+	for (int i = 0; i < 16; ++i) cout << m_hResultGPU[i] << " "; cout << endl;
 	// validate results
 	m_bValidationResults[Task] =( memcmp(m_hResultCPU, m_hResultGPU, m_N * sizeof(unsigned int)) == 0);
 }
