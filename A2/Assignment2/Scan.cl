@@ -31,7 +31,6 @@ __kernel void Scan_WorkEfficient(__global uint* array, __global uint* higherLeve
 {
 	int GID = get_global_id(0);
 	int LID = get_local_id(0);
-	int GSize = get_global_size(0);
 	int LSize = get_local_size(0);
 
 	//UpSweep
@@ -50,17 +49,19 @@ __kernel void Scan_WorkEfficient(__global uint* array, __global uint* higherLeve
 			int left = block[LID];
 			block[LID] += block[LID - stride];
 			block[LID - stride] = left;
-			barrier(CLK_LOCAL_MEM_FENCE);
 		}
+		barrier(CLK_LOCAL_MEM_FENCE);
 	}
 	array[GID] += block[LID];
+	if (LID == LSize-1) higherLevelArray[get_group_id(0)] = array[GID];
 	
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 __kernel void Scan_WorkEfficientAdd(__global uint* higherLevelArray, __global uint* array, __local uint* block) 
-{
-	// TO DO: Kernel implementation (large arrays)
-	// Kernel that should add the group PPS to the local PPS (Figure 14)
+{	
+	int GID = get_global_id(0);
+	int group = get_group_id(0);
+	if (group > 0) array[GID] += higherLevelArray[group - 1];
 }
