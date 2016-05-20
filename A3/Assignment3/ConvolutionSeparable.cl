@@ -51,20 +51,34 @@ void ConvHorizontal(
 	//Each work-item loads H_RESULT_STEPS values + 2 halo values
 	__local float tile[H_GROUPSIZE_Y][(H_RESULT_STEPS + 2) * H_GROUPSIZE_X];
 
-	// TODO:
-	//const int baseX = ...
-	//const int baseY = ...
-	//const int offset = ...
-
-	// Load left halo (check for left bound)
-
+	int2 GID,LID,GRID;
+	GID.x = get_global_id(0);
+	GID.y = get_global_id(1);
+	LID.x = get_local_id(0);
+	LID.y = get_local_id(1);
+	GRID.x = get_group_id(0);
+	GRID.y = get_group_id(1);
+	const int baseX = H_GROUPSIZE_X * GRID.x * H_RESULT_STEPS;
+	const int baseY = H_GROUPSIZE_Y * GRID.y;
+	
 	// Load main data + right halo (check for right bound)
-	// for (int tileID = 1; tileID < ...)
+	for (int tileID = -1; tileID <= H_RESULT_STEPS; tileID++) {
+		int temp = baseX + tileID * H_GROUPSIZE_X + LID.x;
+		if (temp < 0 || temp >= Width) tile[LID.y][LID.x + (tileID + 1) * H_GROUPSIZE_X] = 0;
+		else tile[LID.y][LID.x + (tileID + 1) * H_GROUPSIZE_X] = d_Src[(baseY + LID.y) * Pitch + temp];
+	}
 
 	// Sync the work-items after loading
+	barrier(CLK_LOCAL_MEM_FENCE);
 
 	// Convolve and store the result
-
+	for (int tileID = 0; tileID < H_RESULT_STEPS; tileID++) {
+		float sum = 0.0;
+		for (int i = -KERNEL_RADIUS; i <= KERNEL_RADIUS; i++) {
+			sum += c_Kernel[KERNEL_RADIUS - i] * tile[LID.y][LID.x + (tileID + 1) * H_GROUPSIZE_X + i];
+		}
+		d_Dst[(baseY + LID.y) * Pitch + baseX + tileID * H_GROUPSIZE_X + LID.x] = sum;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,11 +96,36 @@ void ConvVertical(
 {
 	__local float tile[(V_RESULT_STEPS + 2) * V_GROUPSIZE_Y][V_GROUPSIZE_X];
 
-	//TO DO:
-	// Conceptually similar to ConvHorizontal
-	// Load top halo + main data + bottom halo
+	int2 GID,LID,GRID;
+	GID.x = get_global_id(0);
+	GID.y = get_global_id(1);
+	LID.x = get_local_id(0);
+	LID.y = get_local_id(1);
+	GRID.x = get_group_id(0);
+	GRID.y = get_group_id(1);
+	const int baseX = V_GROUPSIZE_X * GRID.x;
+	const int baseY = V_GROUPSIZE_Y * GRID.y * V_RESULT_STEPS;
 
-	// Compute and store results
+	// Load main data + right halo (check for right bound)
+	for (int tileID = -1; tileID <= V_RESULT_STEPS; tileID++) {
+		int temp = baseY + tileID * V_GROUPSIZE_Y + LID.y;
+		if (temp < 0 || temp >= Height) tile[LID.y + (tileID + 1) * V_GROUPSIZE_Y][LID.x] = 0;
+		else tile[LID.y + (tileID + 1) * V_GROUPSIZE_Y][LID.x] = d_Src[temp * Pitch + baseX + LID.x];
+	}
+
+
+
+	// Sync the work-items after loading
+	barrier(CLK_LOCAL_MEM_FENCE);
+
+	// Convolve and store the result
+	for (int tileID = 0; tileID < V_RESULT_STEPS; tileID++) {
+		float sum = 0.0;
+		for (int i = -KERNEL_RADIUS; i <= KERNEL_RADIUS; i++) {
+			sum += c_Kernel[KERNEL_RADIUS - i] * tile[LID.y + (tileID + 1) * V_GROUPSIZE_Y + i][LID.x];
+		}
+		d_Dst[(baseY + tileID * V_GROUPSIZE_Y + LID.y) * Pitch + baseX + LID.x] = sum;
+	}
 
 
 }

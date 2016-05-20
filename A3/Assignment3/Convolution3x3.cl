@@ -29,15 +29,13 @@ void Convolution(
 	// in a similar way to standard C.
 	// the size of the local memory necessary for the convolution is the tile size + the halo area
 	__local float tile[TILE_Y + 2][TILE_X + 2];
-	int2 GID;
-	int2 LID;
-	int2 LSize;
+	int2 GID,LID,LSize;
 	GID.x = get_global_id(0);
 	GID.y = get_global_id(1);
 	LID.x = get_local_id(0);
 	LID.y = get_local_id(1);
-	LSize.x = get_local_size(0);
-	LSize.y = get_local_size(1);
+	//LSize.x = get_local_size(0);
+	//LSize.y = get_local_size(1);
 	// TO DO...
 	
 
@@ -49,15 +47,17 @@ void Convolution(
 	barrier(CLK_LOCAL_MEM_FENCE);
 
 	// Load main filtered area from d_Src
-	tile[LID.y + 1][LID.x + 1] = d_Src[GID.y * Pitch + GID.x];
+	//tile[LID.y + 1][LID.x + 1] = d_Src[GID.y * Pitch + GID.x];
+
+	//^^^It is actually faster to leave this out
 	
 	// Load halo regions from d_Src (edges and corners separately), check for image bounds!
-	if ((LID.x == 0 || LID.x + 1 == LSize.x) || (LID.y == 0 || LID.y + 1 == LSize.y)) {
+	//if ((LID.x == 0 || LID.x + 1 == LSize.x) || (LID.y == 0 || LID.y + 1 == LSize.y)) {
 		if (GID.x > 0 && GID.y > 0) 		tile[LID.y][LID.x] = d_Src[(GID.y - 1) * Pitch + GID.x - 1];
 		if (GID.x > 0 && GID.y + 1 < Height) 	tile[LID.y + 2][LID.x] = d_Src[(GID.y + 1) * Pitch + GID.x - 1];
 		if (GID.x + 1 < Width && GID.y > 0) 	tile[LID.y][LID.x + 2] = d_Src[(GID.y - 1) * Pitch + GID.x + 1];
 		if (GID.x + 1 < Width && GID.y + 1 < Height) 	tile[LID.y + 2][LID.x + 2] = d_Src[(GID.y + 1) * Pitch + GID.x + 1];
-	}
+	//}
 
 	// Sync threads
 	barrier(CLK_LOCAL_MEM_FENCE);
