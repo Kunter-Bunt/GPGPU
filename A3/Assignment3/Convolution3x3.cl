@@ -51,8 +51,6 @@ void Convolution(
 	// Load main filtered area from d_Src
 	tile[LID.y + 1][LID.x + 1] = d_Src[GID.y * Pitch + GID.x];
 	
-	barrier(CLK_LOCAL_MEM_FENCE);
-
 	// Load halo regions from d_Src (edges and corners separately), check for image bounds!
 	if ((LID.x == 0 || LID.x + 1 == LSize.x) || (LID.y == 0 || LID.y + 1 == LSize.y)) {
 		if (GID.x > 0 && GID.y > 0) 		tile[LID.y][LID.x] = d_Src[(GID.y - 1) * Pitch + GID.x - 1];
@@ -63,8 +61,7 @@ void Convolution(
 
 	// Sync threads
 	barrier(CLK_LOCAL_MEM_FENCE);
-	//d_Dst[GID.y * Pitch + GID.x] = tile[LID.y + 1][LID.x + 1];	
-	//return;
+
 
 	// Perform the convolution and store the convolved signal to d_Dst.
 	float sum = 0.0;
