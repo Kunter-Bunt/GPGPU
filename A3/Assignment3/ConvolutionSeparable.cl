@@ -77,7 +77,8 @@ void ConvHorizontal(
 		for (int i = -KERNEL_RADIUS; i <= KERNEL_RADIUS; i++) {
 			sum += c_Kernel[KERNEL_RADIUS - i] * tile[LID.y][LID.x + (tileID + 1) * H_GROUPSIZE_X + i];
 		}
-		d_Dst[(baseY + LID.y) * Pitch + baseX + tileID * H_GROUPSIZE_X + LID.x] = sum;
+		int temp = baseX + tileID * H_GROUPSIZE_X + LID.x;
+		if (temp < Width) d_Dst[(baseY + LID.y) * Pitch + temp] = sum;
 	}
 }
 
@@ -124,7 +125,8 @@ void ConvVertical(
 		for (int i = -KERNEL_RADIUS; i <= KERNEL_RADIUS; i++) {
 			sum += c_Kernel[KERNEL_RADIUS - i] * tile[LID.y + (tileID + 1) * V_GROUPSIZE_Y + i][LID.x];
 		}
-		d_Dst[(baseY + tileID * V_GROUPSIZE_Y + LID.y) * Pitch + baseX + LID.x] = sum;
+		int temp = baseY + tileID * V_GROUPSIZE_Y + LID.y;
+		if (temp < Height) d_Dst[temp * Pitch + baseX + LID.x] = sum;
 	}
 
 
