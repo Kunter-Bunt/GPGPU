@@ -146,7 +146,7 @@ ComputeGPU(cl_context ctx, cl_command_queue cmdq, size_t lws[3])
 		((m_img_width  + lws[0] - 1) / lws[0]) * lws[0],
 		((m_img_height + lws[1] - 1) / lws[1]) * lws[1]
 	};
-
+	
 	CTimer timer;
 	clFinish(cmdq);
 	timer.Start();
@@ -154,7 +154,7 @@ ComputeGPU(cl_context ctx, cl_command_queue cmdq, size_t lws[3])
 	const int num_iterations = 100;
 	for(int i = 0; i < num_iterations; i++) {
 		clEnqueueNDRangeKernel(cmdq, m_kernel_set_to_val, 1, NULL, &global_size_clear, &local_size_clear, 0, NULL, NULL);
-
+ 	
 		clEnqueueNDRangeKernel(cmdq, m_kernel_histogram, 2, NULL, global_size, lws, 0, NULL, NULL);
 	}
 	clFinish(cmdq);
