@@ -150,7 +150,7 @@ ComputeGPU(cl_context ctx, cl_command_queue cmdq, size_t lws[3])
 	CTimer timer;
 	clFinish(cmdq);
 	timer.Start();
-
+	cout<<" gws: "<<global_size[0]<<" x "<<global_size[1]<<", lws: "<<lws[0]<<" x "<<lws[1]<<endl;
 	const int num_iterations = 100;
 	for(int i = 0; i < num_iterations; i++) {
 		clEnqueueNDRangeKernel(cmdq, m_kernel_set_to_val, 1, NULL, &global_size_clear, &local_size_clear, 0, NULL, NULL);

@@ -27,7 +27,7 @@ compute_histogram(
 	GID.y = get_global_id(1);
 
 	if (GID.x < width && GID.y < height) {
-		float gray = img[(GID.y * pitch + GID.x)];
+		float gray = img[GID.y * pitch + GID.x];
 		int index = gray * num_hist_bins;
 		if (index >= 64) index = 63;
 		atomic_inc(&histogram[index]);
@@ -50,16 +50,22 @@ compute_histogram_local_memory(
 	GID.y = get_global_id(1);
 	LID.x = get_local_id(0);
 	LID.y = get_local_id(1);
+	if (LID.x == 0 && LID.y == 0) {	
+		for (int i = 0; i < num_hist_bins; i++) local_hist[i] = 0;
+	}
+	barrier(CLK_LOCAL_MEM_FENCE);
 
 	if (GID.x < width && GID.y < height) {
-		float gray = img[(GID.y * pitch + GID.x)];
+		float gray = img[GID.y * pitch + GID.x];
 		int index = gray * num_hist_bins;
 		if (index >= 64) index = 63;
 		atomic_inc(&local_hist[index]);
 	}
 	barrier(CLK_LOCAL_MEM_FENCE);
+
 	if (LID.x == 0 && LID.y == 0) {	
 		for (int i = 0; i < num_hist_bins; i++) atomic_add(&histogram[i], local_hist[i]);
 	}
 	barrier(CLK_GLOBAL_MEM_FENCE);
+	
 } 
