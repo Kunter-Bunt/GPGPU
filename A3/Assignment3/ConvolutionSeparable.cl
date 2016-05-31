@@ -16,12 +16,12 @@
 //horizontal kernel
 #define H_GROUPSIZE_X		32
 #define H_GROUPSIZE_Y		4
-#define H_RESULT_STEPS		2
+#define H_RESULT_STEPS		8
 
 //vertical kernel
 #define V_GROUPSIZE_X		32
 #define V_GROUPSIZE_Y		16
-#define V_RESULT_STEPS		3
+#define V_RESULT_STEPS		9
 
 */
 
