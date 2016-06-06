@@ -148,18 +148,29 @@ __kernel void Integrate(__global uint *gAlive,
 	float mass = v0.w;
 	float life = x0.w;
 
-	float4 lookUp = x0;
-	lookUp.w = 0.f;
+	float4 lookUpX = x0;
+	float4 lookUpV = v0;
 
-	float4 F0 = read_imagef(gForceField, sampler, lookUp);
-
-
-	// ADD YOUR CODE HERE (INSTEAD OF THE LINES BELOW) 
-	// to finish the implementation of the Verlet Velocity Integration
-	x0.y = 0.2f * sin(x0.w * 5.f) + 0.3f;
-	x0.w -= dT;
-	gPosLife[get_global_id(0)] = x0;
+	float4 F0 = read_imagef(gForceField, sampler, lookUpX);
 	
+	//Verlet
+	v0.w = 0.0;
+	x0.w = 0.0;
+	
+	x0 = x0 + v0*dT + gAccel*dT*dT/2;
+	v0 = v0 + (gAccel + gAccel/2)*dT/2;
+
+	x0.w = lookUpX.w;
+	v0.w = lookUpV.w;
+	x0.w -= dT;
+	
+	gPosLife[get_global_id(0)] = x0;
+	gVelMass[get_global_id(0)] = v0;
+
+	//load triangles
+	for (int i = 0; i < nTriangles; i++){
+	
+	}
 	
 	// Check for collisions and correct the position and velocity of the particle if it collides with a triangle
 	// - Don't forget to offset the particles from the surface a little bit, otherwise they might get stuck in it.
@@ -169,7 +180,7 @@ __kernel void Integrate(__global uint *gAlive,
 
 	// Independently of the status of the particle, possibly create a new one.
 	// For instance, if the particle gets too fast (or too high, or passes through some region), it is split into two...
-
+	
 
 }
 
