@@ -100,12 +100,44 @@ bool CheckCollisions(	float4 x0, float4 x1,
 	//	Iterate over the triangles in the cache and test for the intersection
 	//	nProcessed += k;  
 	//}
+	*t = 1.f + EPSILON;
+	float isectT;
+	float4 isectN;
+	int LID = get_local_id(0);
+	
+	for (int count = 0; count < nTriangles  * 3; count += get_local_size(0)) {
+		if (LID + count < nTriangles * 3) lTriangleCache[LID] = gTriangleSoup[LID + count];
+		barrier(CLK_LOCAL_MEM_FENCE);
+		int minimum = min((int)get_local_size(0)/3, (int)nTriangles - count/3);
+		for (int i = 0; i < minimum; i++) {
+			if(LineTriangleIntersection(x0, x1,
+					lTriangleCache[3*i], lTriangleCache[3*i+1], lTriangleCache[3*i+2],
+					&isectT, &isectN) && (isectT < *t)) {
+				*t = isectT;
+				*n = isectN;
+			}
+		}
+	}
+	if (*t < 1.f + EPSILON) return true;
 	return false;
 
 }
 								
 
+float4 rand(uint2 *state)
+{
+    const float4 invMaxInt = (float4) (1.0f/4294967296.0f, 1.0f/4294967296.0f, 1.0f/4294967296.0f, 0);
+    uint x = (*state).x * 17 + (*state).y * 13123;
+    (*state).x = (x<<13) ^ x;
+    (*state).y ^= (x<<7);
 
+    uint4 tmp = (uint4)
+    ( (x * (x * x * 15731 + 74323) + 871483),
+      (x * (x * x * 13734 + 37828) + 234234),
+      (x * (x * x * 11687 + 26461) + 137589), 0 );
+
+    return convert_float4(tmp) * invMaxInt;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the integration kernel. Implement the missing functionality
@@ -152,25 +184,41 @@ __kernel void Integrate(__global uint *gAlive,
 	float4 lookUpV = v0;
 
 	float4 F0 = read_imagef(gForceField, sampler, lookUpX);
-	
-	//Verlet
-	v0.w = 0.0;
-	x0.w = 0.0;
-	
-	x0 = x0 + v0*dT + gAccel*dT*dT/2;
-	v0 = v0 + (gAccel + gAccel/2)*dT/2;
 
-	x0.w = lookUpX.w;
-	v0.w = lookUpV.w;
-	x0.w -= dT;
+	v0.w = 0.f;
+	x0.w = 0.f;
 	
-	gPosLife[get_global_id(0)] = x0;
-	gVelMass[get_global_id(0)] = v0;
+	float4 x1 = x0 + v0 * dT + gAccel * dT * dT / 2;
+	float4 v1 = v0 + gAccel * dT;
+	
+	float t;
+	float4 n;
+	float damping = 0.8;
 
-	//load triangles
-	for (int i = 0; i < nTriangles; i++){
-	
+	if (CheckCollisions(x0, x1, gTriangleSoup, lTriangleCache, nTriangles, &t, &n)) {
+		x1 = x0 * (1.f - t) + x1 * t + n * 0.01;
+		v1 = (-2.f * dot(v0, n) * n + v0) * damping;
 	}
+	
+
+	x1.w = life - dT;
+	v1.w = mass;
+		
+	if (x1.w <= 0) gAlive[get_global_id(0)] = 0;
+
+	if (gAlive[get_global_id(0)] == 0 && get_global_id(0) < 5000) {
+		uint2 state;
+		state.x = get_global_id(0);
+		state.y = get_global_id(1);
+		float4 offset = 0.2*rand(&state);
+		x1 = (float4)(0.4,0.35,0.8,1.5)+offset;
+		gAlive[get_global_id(0)] = 1;
+	}
+	gPosLife[get_global_id(0)] = x1;
+	gVelMass[get_global_id(0)] = v1;
+
+
+	
 	
 	// Check for collisions and correct the position and velocity of the particle if it collides with a triangle
 	// - Don't forget to offset the particles from the surface a little bit, otherwise they might get stuck in it.
