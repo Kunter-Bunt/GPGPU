@@ -109,7 +109,7 @@ bool CParticleSystemTask::InitResources(cl_device_id Device, cl_context Context)
 		pPosLife[i].s[0] = (float(rand()) / float(RAND_MAX) * 0.5f + 0.25f);
 		pPosLife[i].s[1] = (float(rand()) / float(RAND_MAX) * 0.5f + 0.25f);
 		pPosLife[i].s[2] = (float(rand()) / float(RAND_MAX) * 0.5f + 0.25f);
-		pPosLife[i].s[3] = 100.f + 5.f * (float(rand()) / float(RAND_MAX));
+		pPosLife[i].s[3] = 1.f + 1.f * (float(rand()) / float(RAND_MAX));
 
 		// if (i & 1)
 		// 	pPosLife[i].s[3] = 0.f;
@@ -123,16 +123,16 @@ bool CParticleSystemTask::InitResources(cl_device_id Device, cl_context Context)
 	// Device resources
 	glGenBuffers(2, m_glPosLife);
 	glBindBuffer(GL_ARRAY_BUFFER, m_glPosLife[0]);
-	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4) * 2, pPosLife, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4), pPosLife, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, m_glPosLife[1]);
-	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4) * 2, pPosLife, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4), pPosLife, GL_DYNAMIC_DRAW);
     CHECK_FOR_OGL_ERROR();
 
 	glGenBuffers(2, m_glVelMass);
 	glBindBuffer(GL_ARRAY_BUFFER, m_glVelMass[0]);
-	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4) * 2, pVelMass, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4), pVelMass, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, m_glVelMass[1]);
-	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4) * 2, pVelMass, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_nParticles * sizeof(cl_float4), pVelMass, GL_DYNAMIC_DRAW);
     CHECK_FOR_OGL_ERROR();
 
 	//create a texture for the TBO
