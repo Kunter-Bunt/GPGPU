@@ -52,8 +52,12 @@
 		// Compute the new one position using the Verlet position integration, taking into account gravity and wind
 		// Move the value from d_pos into d_prevPos and store the new one in d_pos
 
-
-    }
+	
+		float4 x0 = d_pos[particleID];
+		d_prevPos[particleID] = x0;
+		
+		d_pos[particleID] = x0 + G_ACCEL * elapsedTime * elapsedTime;
+    }	
 }
 
 
@@ -96,7 +100,7 @@ __kernel void SatisfyConstraints(unsigned int width,
     
     if(get_global_id(0) >= width || get_global_id(1) >= height)
 		return;
-
+	
 
 	// ADD YOUR CODE HERE!
 	// Satisfy all the constraints (structural, shear, and bend).
@@ -106,7 +110,29 @@ __kernel void SatisfyConstraints(unsigned int width,
 
 	// Hint: you should use the SatisfyConstraint helper function in the following manner:
 	//SatisfyConstraint(pos, neighborpos, restDistance) * WEIGHT_XXX
-
+	unsigned int particleID = get_global_id(0) + get_global_id(1) * width;
+	   if(particleID > width-1 || ( particleID & ( 7 )) != 0){
+		
+		float4 correction = (float)(0.f,0.f,0.f,0.f);
+		bool lh,gh,lw,gw;
+		lh = get_global_id(1) < height-1;
+		gh = get_global_id(1) > 0;
+		lw = get_global_id(0) < width-1;
+		gw = get_global_id(0) > 0;	
+		
+		if(lh) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width], restDistance);
+		if(gh) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width], restDistance);
+		if(lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+1], restDistance);
+		if(gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-1], restDistance);
+		d_posOut[particleID] = d_posIn[particleID] + correction * WEIGHT_ORTHO;
+	
+			
+		if(lh && lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width+1], restDistance);
+		if(lh && gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width-1], restDistance);
+		if(gh && lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width+1], restDistance);
+		if(gh && gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width-1], restDistance);
+		d_posOut[particleID] = d_posIn[particleID] + correction * WEIGHT_DIAG;
+	}
 }
 
 
@@ -130,7 +156,14 @@ __kernel void CheckCollisions(unsigned int width,
 	// ADD YOUR CODE HERE!
 	// Find whether the particle is inside the sphere.
 	// If so, push it outside.
-
+	
+	float dist = sqrt((d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) * (d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) + (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) * (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) + (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z) * (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z)); 
+	//float dist = sqrt(dot((d_pos[get_global_id(1) * width + get_global_id(0)] - spherePos), (float4)(1.0f, 1.0f, 1.0f, 1.0f)))
+	if (dist < sphereRad) {
+		d_pos[get_global_id(1) * width + get_global_id(0)].x =  (d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) * sphereRad / dist;
+		d_pos[get_global_id(1) * width + get_global_id(0)].y =  (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) * sphereRad / dist;
+		d_pos[get_global_id(1) * width + get_global_id(0)].z =  (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z) * sphereRad / dist;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
