@@ -53,10 +53,12 @@
 		// Move the value from d_pos into d_prevPos and store the new one in d_pos
 
 	
-		float4 x0 = d_pos[particleID];
-		d_prevPos[particleID] = x0;
+		float4 x0 = d_prevPos[particleID];
+		float4 x1 = d_pos[particleID];
 		
-		d_pos[particleID] = x0 + G_ACCEL * elapsedTime * elapsedTime;
+		
+		d_pos[particleID] = x1 + G_ACCEL * elapsedTime * elapsedTime;
+		d_prevPos[particleID] = x1;
     }	
 }
 
@@ -110,29 +112,58 @@ __kernel void SatisfyConstraints(unsigned int width,
 
 	// Hint: you should use the SatisfyConstraint helper function in the following manner:
 	//SatisfyConstraint(pos, neighborpos, restDistance) * WEIGHT_XXX
-	unsigned int particleID = get_global_id(0) + get_global_id(1) * width;
-	   if(particleID > width-1 || ( particleID & ( 7 )) != 0){
-		
-		float4 correction = (float)(0.f,0.f,0.f,0.f);
-		bool lh,gh,lw,gw;
-		lh = get_global_id(1) < height-1;
-		gh = get_global_id(1) > 0;
-		lw = get_global_id(0) < width-1;
-		gw = get_global_id(0) > 0;	
-		
-		if(lh) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width], restDistance);
-		if(gh) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width], restDistance);
-		if(lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+1], restDistance);
-		if(gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-1], restDistance);
-		d_posOut[particleID] = d_posIn[particleID] + correction * WEIGHT_ORTHO;
 	
-			
-		if(lh && lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width+1], restDistance);
-		if(lh && gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID+width-1], restDistance);
-		if(gh && lw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width+1], restDistance);
-		if(gh && gw) correction += SatisfyConstraint(d_posIn[particleID], d_posIn[particleID-width-1], restDistance);
-		d_posOut[particleID] = d_posIn[particleID] + correction * WEIGHT_DIAG;
+	unsigned int particleID = get_global_id(0) + get_global_id(1) * width;
+	float4 cacheIn = d_posIn[particleID];
+	float4 cacheOut = cacheIn;
+
+	if(particleID > width-1 || ( particleID & ( 7 )) != 0){
+		
+		bool lh,gh,lw,gw,llh,ggh,llw,ggw;
+		lh = get_global_id(1) < height-1;
+		gh = get_global_id(1) >= 1;
+		lw = get_global_id(0) < width-1;
+		gw = get_global_id(0) >= 1;	
+		llh = get_global_id(1) < height-2;
+		ggh = get_global_id(1) >= 2;
+		llw = get_global_id(0) < width-2;
+		ggw = get_global_id(0) >= 2;
+	
+		float4 correction = (float)(0.f,0.f,0.f,0.f);
+		if(lh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width], restDistance);
+		if(gh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width], restDistance);
+		if(lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+1], restDistance);
+		if(gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-1], restDistance);
+		cacheOut += correction * WEIGHT_ORTHO;
+/*
+		correction = (float)(0.f,0.f,0.f,0.f);
+		if(lh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width+1], restDistance);
+		if(lh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width-1], restDistance);
+		if(gh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width+1], restDistance);
+		if(gh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width-1], restDistance);
+		cacheOut += correction * WEIGHT_DIAG;
+
+		correction = (float)(0.f,0.f,0.f,0.f);
+		if(llh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width], restDistance);
+		if(ggh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width], restDistance);
+		if(llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2], restDistance);
+		if(ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2], restDistance);
+		cacheOut += correction * WEIGHT_ORTHO_2;
+
+		correction = (float)(0.f,0.f,0.f,0.f);
+		if(llh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width+2], restDistance);
+		if(llh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width-2], restDistance);
+		if(ggh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width+2], restDistance);
+		if(ggh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width-2], restDistance);
+		cacheOut += correction * WEIGHT_DIAG_2;
+
+	
+		if (length(cacheOut - cacheIn) > 0.5f * restDistance) {
+		cacheOut += normalize(cacheOut - cacheIn) * 0.5f * restDistance;
+		}
+*/
 	}
+	d_posOut[particleID] = cacheOut;
 }
 
 
@@ -156,14 +187,12 @@ __kernel void CheckCollisions(unsigned int width,
 	// ADD YOUR CODE HERE!
 	// Find whether the particle is inside the sphere.
 	// If so, push it outside.
+	if(get_global_id(0) >= width || get_global_id(1) >= height)
+		return;
+	unsigned int particleID = get_global_id(0) + get_global_id(1) * width;
+	float4 distanceVector = d_pos[particleID] - spherePos;
+	if (length(distanceVector) < sphereRad) d_pos[particleID] += normalize(distanceVector) * (sphereRad - length(distanceVector));
 	
-	float dist = sqrt((d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) * (d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) + (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) * (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) + (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z) * (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z)); 
-	//float dist = sqrt(dot((d_pos[get_global_id(1) * width + get_global_id(0)] - spherePos), (float4)(1.0f, 1.0f, 1.0f, 1.0f)))
-	if (dist < sphereRad) {
-		d_pos[get_global_id(1) * width + get_global_id(0)].x =  (d_pos[get_global_id(1) * width + get_global_id(0)].x - spherePos.x) * sphereRad / dist;
-		d_pos[get_global_id(1) * width + get_global_id(0)].y =  (d_pos[get_global_id(1) * width + get_global_id(0)].y - spherePos.y) * sphereRad / dist;
-		d_pos[get_global_id(1) * width + get_global_id(0)].z =  (d_pos[get_global_id(1) * width + get_global_id(0)].z - spherePos.z) * sphereRad / dist;
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////

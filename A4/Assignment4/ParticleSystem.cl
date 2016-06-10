@@ -196,7 +196,7 @@ __kernel void Integrate(__global uint *gAlive,
 	float damping = 0.8;
 
 	if (CheckCollisions(x0, x1, gTriangleSoup, lTriangleCache, nTriangles, &t, &n)) {
-		x1 = x0 * (1.f - t) + x1 * t + n * 0.01;
+		x1 = x0 * (1.f - t) + x1 * t + n * (float4)(0.01,0.01,0.01,0.01);
 		v1 = (-2.f * dot(v0, n) * n + v0) * damping;
 	}
 	
@@ -210,7 +210,7 @@ __kernel void Integrate(__global uint *gAlive,
 		uint2 state;
 		state.x = get_global_id(0);
 		state.y = get_global_id(1);
-		float4 offset = 0.2*rand(&state);
+		float4 offset = (float4)(0.2,0.2,0.2,0.2)*rand(&state);
 		x1 = (float4)(0.4,0.35,0.8,1.5)+offset;
 		gAlive[get_global_id(0)] = 1;
 	}
