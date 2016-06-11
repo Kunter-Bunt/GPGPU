@@ -56,8 +56,8 @@
 		float4 x0 = d_prevPos[particleID];
 		float4 x1 = d_pos[particleID];
 		
-		
-		d_pos[particleID] = x1 + G_ACCEL * elapsedTime * elapsedTime;
+		if (elapsedTime / prevElapsedTime < 1000.0) d_pos[particleID] = x1 + (x1 - x0) * (elapsedTime / prevElapsedTime) * 0.7f + G_ACCEL * elapsedTime * elapsedTime;
+		else d_pos[particleID] = x1 + G_ACCEL * elapsedTime * elapsedTime;
 		d_prevPos[particleID] = x1;
     }	
 }

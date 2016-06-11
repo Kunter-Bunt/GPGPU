@@ -111,8 +111,7 @@ bool CheckCollisions(	float4 x0, float4 x1,
 		int minimum = min((int)get_local_size(0)/3, (int)nTriangles - count/3);
 		for (int i = 0; i < minimum; i++) {
 			if(LineTriangleIntersection(x0, x1,
-					lTriangleCache[3*i], lTriangleCache[3*i+1], lTriangleCache[3*i+2],
-					&isectT, &isectN) && (isectT < *t)) {
+					lTriangleCache[3*i], lTriangleCache[3*i+1], lTriangleCache[3*i+2], &isectT, &isectN) && (isectT < *t)) {
 				*t = isectT;
 				*n = isectN;
 			}
@@ -180,10 +179,7 @@ __kernel void Integrate(__global uint *gAlive,
 	float mass = v0.w;
 	float life = x0.w;
 
-	float4 lookUpX = x0;
-	float4 lookUpV = v0;
-
-	float4 F0 = read_imagef(gForceField, sampler, lookUpX);
+	float4 F0 = read_imagef(gForceField, sampler, x0);
 
 	v0.w = 0.f;
 	x0.w = 0.f;
@@ -211,6 +207,7 @@ __kernel void Integrate(__global uint *gAlive,
 		state.x = get_global_id(0);
 		state.y = get_global_id(1);
 		float4 offset = (float4)(0.2,0.2,0.2,0.2)*rand(&state);
+
 		x1 = (float4)(0.4,0.35,0.8,1.5)+offset;
 		gAlive[get_global_id(0)] = 1;
 	}
