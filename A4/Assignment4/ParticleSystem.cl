@@ -111,7 +111,7 @@ bool CheckCollisions(	float4 x0, float4 x1,
 		int minimum = min((int)get_local_size(0)/3, (int)nTriangles - count/3);
 		for (int i = 0; i < minimum; i++) {
 			if(LineTriangleIntersection(x0, x1,
-					lTriangleCache[3*i], lTriangleCache[3*i+1], lTriangleCache[3*i+2], &isectT, &isectN) && (isectT < *t)) {
+					lTriangleCache[3*i], lTriangleCache[3*i+1], lTriangleCache[3*i+2], &isectT, &isectN) && (isectT> EPSILON) && (isectT < *t)) {
 				*t = isectT;
 				*n = isectN;
 			}
@@ -184,15 +184,15 @@ __kernel void Integrate(__global uint *gAlive,
 	v0.w = 0.f;
 	x0.w = 0.f;
 	
-	float4 x1 = x0 + v0 * dT + gAccel * dT * dT / 2;
-	float4 v1 = v0 + gAccel * dT;
+	float4 x1 = x0 + v0 * dT + (gAccel + F0/mass) * dT * dT / 2;
+	float4 v1 = v0 + (gAccel + F0/mass) * dT;
 	
 	float t;
 	float4 n;
 	float damping = 0.8;
 
 	if (CheckCollisions(x0, x1, gTriangleSoup, lTriangleCache, nTriangles, &t, &n)) {
-		x1 = x0 * (1.f - t) + x1 * t + n * (float4)(0.01,0.01,0.01,0.01);
+		x1 = x0 * (1.f - t) + x1 * t;// + n * (float4)(0.01,0.01,0.01,0.01);
 		v1 = (-2.f * dot(v0, n) * n + v0) * damping;
 	}
 	
