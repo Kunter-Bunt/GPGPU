@@ -135,26 +135,26 @@ __kernel void SatisfyConstraints(unsigned int width,
 		if(lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+1], restDistance);
 		if(gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-1], restDistance);
 		cacheOut += correction * WEIGHT_ORTHO;
-/*
+
 		correction = (float)(0.f,0.f,0.f,0.f);
-		if(lh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width+1], restDistance);
-		if(lh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width-1], restDistance);
-		if(gh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width+1], restDistance);
-		if(gh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width-1], restDistance);
+		if(lh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width+1], hypot(restDistance,restDistance));
+		if(lh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+width-1], hypot(restDistance,restDistance));
+		if(gh && lw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width+1], hypot(restDistance,restDistance));
+		if(gh && gw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-width-1], hypot(restDistance,restDistance));
 		cacheOut += correction * WEIGHT_DIAG;
 
 		correction = (float)(0.f,0.f,0.f,0.f);
-		if(llh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width], restDistance);
-		if(ggh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width], restDistance);
-		if(llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2], restDistance);
-		if(ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2], restDistance);
+		if(llh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width], 2*restDistance);
+		if(ggh) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width], 2*restDistance);
+		if(llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2], 2*restDistance);
+		if(ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2], 2*restDistance);
 		cacheOut += correction * WEIGHT_ORTHO_2;
-
+/*
 		correction = (float)(0.f,0.f,0.f,0.f);
-		if(llh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width+2], restDistance);
-		if(llh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width-2], restDistance);
-		if(ggh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width+2], restDistance);
-		if(ggh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width-2], restDistance);
+		if(llh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width+2], hypot(2*restDistance,2*restDistance));
+		if(llh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID+2*width-2], hypot(2*restDistance,2*restDistance));
+		if(ggh && llw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width+2], hypot(2*restDistance,2*restDistance));
+		if(ggh && ggw) correction += SatisfyConstraint(cacheIn, d_posIn[particleID-2*width-2], hypot(2*restDistance,2*restDistance));
 		cacheOut += correction * WEIGHT_DIAG_2;
 
 	
